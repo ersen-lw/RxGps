@@ -32,8 +32,11 @@ publishing {
 }
 
 bintray {
-    user = project.hasProperty('bintray.user') ?: System.getenv('BINTRAY_USER')
-    key = project.hasProperty('bintray.apikey') ?: System.getenv('BINTRAY_API_KEY')
+    def credentialsPropertiesFile = rootProject.file("credentials.properties")
+    def credentialsProperties = new Properties()
+    credentialsProperties.load(new FileInputStream(credentialsPropertiesFile))
+    user = credentialsProperties['bintray.user']
+    key = credentialsProperties['bintray.apikey']
     publications = ['Production']
     configurations = ['archives']
     // Default: false. Whether to run this as dry-run, without deploying
